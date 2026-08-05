@@ -16,7 +16,7 @@ import {
   EXEC_SUMMARY,
   PeriodKey,
 } from "@/lib/overview";
-import { MODULES, metricsByModule, formatMetricValue, metricStatus, completionRate } from "@/lib/metrics";
+import { MODULES, metricsByModule, healthScore } from "@/lib/metrics";
 
 const UPDATED_AT = "2026-08-01";
 
@@ -153,10 +153,10 @@ export default function Dashboard() {
   const structureOption = useMemo(() => buildStructureOption(period), [period]);
   const summary = EXEC_SUMMARY[period];
 
-  // 模块健康度：各模块平均目标完成率
+  // 模块健康度：各指标健康度得分（0~100，已折算越低越好指标）的平均
   const moduleHealth = MODULES.map((m) => {
     const list = metricsByModule(m.key);
-    const avg = list.reduce((s, x) => s + completionRate(x), 0) / (list.length || 1);
+    const avg = list.reduce((s, x) => s + healthScore(x), 0) / (list.length || 1);
     return { ...m, pct: Math.round(avg * 100) };
   });
 

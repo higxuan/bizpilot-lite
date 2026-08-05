@@ -95,3 +95,12 @@ export function metricStatus(m: Metric): "达标" | "关注" | "预警" {
   if (good) return "达标";
   return ok ? "关注" : "预警";
 }
+
+// 健康度得分（0~1）：统一折算成「越接近/达到目标越好」，对越低越好指标取倒数。
+// 用于模块健康度平均，避免出现 >100% 的误导值。
+export function healthScore(m: Metric): number {
+  const rate = completionRate(m);
+  const lower = LOWER_BETTER.has(m.metric_code);
+  const score = lower ? (rate > 0 ? 1 / rate : 1) : rate;
+  return Math.min(Math.max(score, 0), 1);
+}

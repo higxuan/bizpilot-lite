@@ -3,18 +3,20 @@
 @tailwind utilities;
 
 :root {
-  /* BizPilot 设计 token（与内部生产系统同一套视觉语言） */
-  --bp-bg: #f5f7f9;
-  --bp-card: #ffffff;
-  --bp-border: #e8edf3;
-  --bp-text: #172033;
-  --bp-title: #101828;
-  --bp-muted: #667085;
-  --bp-faint: #98a2b3;
-  --bp-blue: #2563eb;
-  --bp-green: #0f936f;
-  --bp-amber: #b15c00;
-  --bp-red: #c2410c;
+  /* 编辑感配色：暖纸底 + 墨绿主色 + 墨色数字 */
+  --paper: #f6f6f3;
+  --card: #ffffff;
+  --line: #e8e6e1;
+  --line-strong: #dcd9d2;
+  --ink: #16181d;
+  --ink-2: #44484f;
+  --muted: #6b7280;
+  --faint: #9aa0a8;
+  --accent: #0e7a5a;
+  --accent-deep: #0a5c44;
+  --up: #15803d;
+  --warn: #b45309;
+  --risk: #b91c1c;
 }
 
 html,
@@ -23,8 +25,21 @@ body {
 }
 
 body {
-  background: var(--bp-bg);
-  color: var(--bp-text);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: ui-sans-serif, -apple-system, "SF Pro SC", "PingFang SC",
+    "Helvetica Neue", "Microsoft YaHei", "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* 数字统一用等宽数字，避免跳动、增强报表感 */
+.num {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: rgba(14, 122, 90, 0.16);
 }

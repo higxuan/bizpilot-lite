@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* BizPilot 设计 token（与内部生产系统同一套视觉语言） */
+  --bp-bg: #f5f7f9;
+  --bp-card: #ffffff;
+  --bp-border: #e8edf3;
+  --bp-text: #172033;
+  --bp-title: #101828;
+  --bp-muted: #667085;
+  --bp-faint: #98a2b3;
+  --bp-blue: #2563eb;
+  --bp-green: #0f936f;
+  --bp-amber: #b15c00;
+  --bp-red: #c2410c;
+}
+
+html,
 body {
-  @apply bg-slate-50 text-slate-800;
+  height: 100%;
+}
+
+body {
+  background: var(--bp-bg);
+  color: var(--bp-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }

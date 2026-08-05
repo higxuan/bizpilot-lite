@@ -60,3 +60,38 @@ export const MOCK_METRICS: Metric[] = [
 export function metricsByModule(key: ModuleKey): Metric[] {
   return MOCK_METRICS.filter((m) => m.module === key);
 }
+
+// 统一数值格式化：金额转「万元」，百分比转「%」，计数取整。
+export function formatMetricValue(value: number, unit: Metric["unit"]): string {
+  if (unit === "CNY") return "¥" + (value / 10000).toFixed(1) + "万";
+  if (unit === "pct") return (value * 100).toFixed(1) + "%";
+  return Math.round(value).toLocaleString("zh-CN");
+}
+
+// 「越低越好」的指标：完成率判断需反向（超过目标反而是坏事）。
+const LOWER_BETTER = new Set([
+  "total_cost",
+  "churn_rate",
+  "budget_deviation",
+  "delay_risk",
+  "expense_rate",
+  "team_load",
+  "key_role_risk",
+  "concentration",
+]);
+
+// 目标完成率（0~1+），供模块页完成率条形图使用。
+export function completionRate(m: Metric): number {
+  if (!m.target_value) return 1;
+  return m.actual_value / m.target_value;
+}
+
+// 状态：达标 / 关注 / 预警（考虑越低越好指标）。
+export function metricStatus(m: Metric): "达标" | "关注" | "预警" {
+  const rate = completionRate(m);
+  const lower = LOWER_BETTER.has(m.metric_code);
+  const good = lower ? rate <= 1 : rate >= 1;
+  const ok = lower ? rate <= 1.2 : rate >= 0.8;
+  if (good) return "达标";
+  return ok ? "关注" : "预警";
+}
